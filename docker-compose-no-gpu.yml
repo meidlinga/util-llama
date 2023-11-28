@@ -1,0 +1,10 @@
+version: '3'
+services:
+  llama:
+    image: llama-cpp-container
+    build:
+      context: .
+    ports:
+      - "2231:22"
+    volumes:
+      - ./models:/models
