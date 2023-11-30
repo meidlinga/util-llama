@@ -58,20 +58,14 @@ RUN su - llama-cpp-user -c "cd ~/llama.cpp \
                             && conda activate llamacpp \
                             && python3 -m pip install -r requirements.txt " 
 
+COPY ssh/authorized_keys /home/llama-cpp-user/.ssh/authorized_keys
+RUN chmod 700 /home/llama-cpp-user/.ssh
+RUN chmod 600 /home/llama-cpp-user/.ssh/authorized_keys
 # Download model
 #COPY ./download.sh 
 
 # ADD PATH TO YOUR MODEL:
 #COPY ./models/llama-2-13b-chat.ggmlv3.q2_K.bin
 
-# COPY entrypoint.sh /usr/bin/entrypoint
-# RUN chmod 755 /usr/bin/entrypoint
-# ENTRYPOINT ["/usr/bin/entrypoint"]
-
-# Preparing for login
-ENV HOME /home/llama-cpp-user
-WORKDIR ${HOME}/llama.cpp
-USER llama-cpp-user
-CMD ["/bin/bash"]
-
-ENTRYPOINT tail -f /dev/null
+COPY ep.sh /ep.sh
+ENTRYPOINT bash /ep.sh
